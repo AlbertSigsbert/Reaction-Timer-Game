@@ -1,7 +1,8 @@
 <template>
 <h1>Vue Reaction Timer</h1>
 <button @click="start" :disabled="isPlaying">play</button>
-<Block v-if="isPlaying" :delay="delay"/>
+<Block v-if="isPlaying" :delay="delay" @end="endGame"/>
+<p v-if="showResults">Reaction Time: {{ score }} ms</p>
 </template>
 
 <script>
@@ -16,13 +17,21 @@ export default {
   data(){
     return{
       isPlaying:false,
-      delay:null
+      delay:null,
+      score:null,
+      showResults:false
     }
   },
   methods:{
     start(){
      this.delay = 2000 + Math.random() * 5000
      this.isPlaying = true
+     this.showResults = false
+    },
+    endGame(reactionTime){
+      this.score = reactionTime
+      this.isPlaying = false
+      this.showResults = true
     }
   }
 
